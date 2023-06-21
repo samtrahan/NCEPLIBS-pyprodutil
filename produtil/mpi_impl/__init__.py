@@ -228,13 +228,21 @@ def register_implementations(logger=None):
     # unused produtil.mpi_impl.* modules without breaking produtil.run
     # functionality.
 
+#    try:
+    import produtil.mpi_impl.mpirun_openmpi
+    add_implementation(produtil.mpi_impl.mpirun_openmpi.Implementation)
+#    except ImportError as e: 
+#        logger.info('mpirun_openmpi: cannot import: %s'%(str(e),))
+
+    return
+
     try:
         # If we have srun, and we're in a pack group...
         import produtil.mpi_impl.srun_pack_groups
         add_implementation(produtil.mpi_impl.srun_pack_groups.Implementation)
     except ImportError as e: 
         logger.info('srun: cannot import: %s'%(str(e),))
-
+        
     try:
         # This must be after the pack group case.
         # If we have srun and SLURM resources...
